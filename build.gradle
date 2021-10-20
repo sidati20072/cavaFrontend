@@ -1,0 +1,66 @@
+buildscript {
+  repositories {
+    maven {
+      url System.getProperty('artifactoryDefaultUrl')
+      credentials {
+        username = System.getProperty('artifactoryUsername')
+        password = System.getProperty('artifactoryPassword')
+      }
+    }
+  }
+  dependencies {
+    classpath 'com.adias.gradle:adias-gradle-plugins:1.3.3'
+  //  classpath 'com.moowork.gradle:gradle-node-plugin:1.3.1'
+  }
+}
+
+apply plugin: 'com.moowork.node'
+apply plugin: 'com.adias.gradle.front-app'
+
+node {
+  version = '14.15.1'
+  npmVersion = '6.14.8'
+  download = true
+  workDir = file("${project.projectDir}/node")
+  nodeModulesDir = file("${project.projectDir}")
+}
+
+
+jib {
+  to {
+    afterEvaluate {
+      tags = [project.rootProject.version]
+    }
+  }
+}
+
+jar.dependsOn 'npm_run_build'
+
+jar {
+  from 'dist/app' into 'static'
+}
+
+task install(type: NpmTask) {
+  group = "Origin Frontend - Node"
+  args = ['install']
+}
+
+task buildProdFrontEnd(type: Exec) {
+  group = "Origin Frontend - Build"
+  dependsOn 'nodeSetup'
+  dependsOn 'npmSetup'
+  doFirst {
+    String nodeCmd = "npm run testCoverage && npm run buildProd"
+    println(nodeCmd)
+    if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
+      commandLine 'cmd', '/c', nodeCmd
+    } else {
+      commandLine 'sh', '-c', nodeCmd
+    }
+  }
+}
+
+clean
+  .doFirst {
+    delete "dist"
+  }

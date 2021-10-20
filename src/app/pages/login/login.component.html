@@ -1,0 +1,75 @@
+﻿<!--
+  ~ /*
+  ~  * Copyright (c) 2020. ALIS.
+  ~  * Proprietary source code; any copy or modification is prohibited.
+  ~  *
+  ~  *
+  ~  *
+  ~  */
+  -->
+<alert></alert>
+<div class="container-fluid main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="formulaire">
+        <div class="container">
+
+          <h4 class="mb-0 p-3">Angular jwt template</h4>
+          <small class="color-gray p-3">Veuillez-vous connecter</small>
+          <form class="p-3" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="row mt-3">
+              <div class="form-group col-md-12">
+                <input
+                  type="text"
+                  formControlName="username"
+                  class="form-control"
+                  placeholder="Votre login"
+                  [ngClass]="{ 'is-invalid': submitted && f.username.errors }"
+                />
+                <div
+                  *ngIf="submitted && f.username.errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.username.errors.required">
+                    Username is required
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-12">
+                <input
+                  type="password"
+                  formControlName="password"
+                  class="form-control"
+                  placeholder="Mot de passe"
+                  [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+                />
+                <div
+                  *ngIf="submitted && f.password.errors"
+                  class="invalid-feedback"
+                >
+                  <div *ngIf="f.password.errors.required">
+                    Password is required
+                  </div>
+                </div>
+              </div>
+              <div class="text-center col-md-12 mt-3 mb-0"
+              >
+                <button [disabled]="loading" class="btn btn-primary custom-btn">
+                <span
+                  *ngIf="loading"
+                  class="spinner-border spinner-border-sm mr-1"
+                ></span>
+                  Se connecter
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!-- end of page login content -->
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+{
+  "/secure/**": {
+    "target": "https://telkihi.gibli.mr",
+    "secure": false,
+    "loglevel": "debug",
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/secure": ""
+    }
+  }
+}
